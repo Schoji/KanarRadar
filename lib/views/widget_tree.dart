@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
+import 'package:kontrole/views/pages/addpost_page.dart';
 import 'package:kontrole/views/pages/home_page.dart';
 import 'package:kontrole/views/pages/map_page.dart';
+import 'package:kontrole/views/pages/profile_page.dart';
 import 'package:kontrole/views/widgets/drawer_widget.dart';
 import 'package:kontrole/views/widgets/navbar_widget.dart';
 
-List<Widget> pages = [HomePage(), MapPage()];
+List<Widget> pages = [HomePage(), MapPage(), AddPost(), ProfilePage(), Placeholder()];
 
 class WidgetTree extends StatelessWidget {
   const WidgetTree({super.key});

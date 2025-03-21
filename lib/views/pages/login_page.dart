@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kontrole/views/pages/forgotpassword_page.dart';
 import 'package:kontrole/views/widget_tree.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,7 +59,13 @@ class _LoginPageState extends State<LoginPage> {
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => WidgetTree()),
+                    (route) => false,
+                  );
+                },
                 child: Text("Log in"),
               ),
               TextButton(
@@ -66,10 +73,9 @@ class _LoginPageState extends State<LoginPage> {
                   minimumSize: Size(double.infinity, 50.0),
                 ),
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => WidgetTree()),
-                    (route) => false,
+                    MaterialPageRoute(builder: (context) => ForgotpasswordPage()),
                   );
                 },
                 child: Text("Forgot password?"),

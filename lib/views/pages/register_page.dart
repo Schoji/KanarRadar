@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kontrole/views/pages/login_page.dart';
+import 'package:kontrole/views/widget_tree.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -57,15 +59,27 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: () {},
-                child: Text("Log in"),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => WidgetTree()),
+                    (route) => false,
+                  );
+                },
+                child: Text("Register"),
               ),
               TextButton(
                 style: TextButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: () {},
-                child: Text("Forgot password?"),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (route) => false,
+                  );
+                },
+                child: Text("Already have an account?"),
               ),
             ],
           ),
