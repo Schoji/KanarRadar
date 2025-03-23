@@ -46,14 +46,14 @@ class NavbarWidget extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.person),
+                    icon: Icon(Icons.notifications),
                     onPressed: () {
                       selectedPageNotifier.value = 3;
                     },
                     color: selectedPage == 3 ? Colors.teal : Colors.grey,
                   ),
                   IconButton(
-                    icon: Icon(Icons.train),
+                    icon: Icon(Icons.person_2_rounded),
                     onPressed: () {
                       selectedPageNotifier.value = 4;
                     },
