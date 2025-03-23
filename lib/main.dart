@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:kontrole/app_logic/page_manager.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/views/pages/welcome_page.dart';
 import 'package:kontrole/app_logic/auth_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
 
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => AuthService())],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -38,7 +36,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           debugShowCheckedModeBanner: false,
-          home: const WelcomePage(),
+          home: PageManager(),
         );
       },
     );
