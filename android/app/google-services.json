@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "142441653709",
+    "firebase_url": "https://stopkanar-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "stopkanar",
+    "storage_bucket": "stopkanar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142441653709:android:ceea9db0856be289f11084",
+        "android_client_info": {
+          "package_name": "com.example.kontrole"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9sOMomIaX1Op-FiYApWnCLUnvRgpBNkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

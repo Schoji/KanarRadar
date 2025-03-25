@@ -1,9 +1,19 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:kontrole/views/widgets/post_widget.dart';
 import 'package:kontrole/views/widgets/posttype_widget.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final DatabaseReference postsRef = FirebaseDatabase.instance.ref().child(
+    'post',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +32,29 @@ class HomePage extends StatelessWidget {
                   PosttypeWidget(buttonId: 2, text: "Near you"),
                 ],
               ),
-              PostWidget(
-                username: "hana23",
-                city: "Szczecin",
-                timestamp: DateTime.now().subtract(const Duration(minutes: 20)), //! Placeholder date, needs replacement
-                content: "Dwóch miłych panów na placu kościuszki linia nr 8",
-                likeScore: 24,
-              ),
-              PostWidget(
-                username: "einerjohn64",
-                city: "Szczecin",
-                timestamp: DateTime.now().subtract(const Duration(minutes: 2)), //! Placeholder date, needs replacement
-                content: "2, ulica krzywoustego, zielone tshirty",
-                profileImage: AssetImage("assets/images/profiles/3.png"),
-                likeScore: 19,
-              ),
-              PostWidget(
-                username: "paruwa32",
-                city: "Szczecin",
-                timestamp: DateTime.now().subtract(const Duration(minutes: 50)), //! Placeholder date, needs replacement
-                content: "siema siema o tej porze kazdy wypić moze, dwóch lamusów w 3 strona chujowice dolne",
-                likeScore: -5,
-                profileImage: AssetImage("assets/images/profiles/1.png"),
+              StreamBuilder(
+                stream: postsRef.onValue,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.data?.snapshot.value == null) {
+                    return CircularProgressIndicator();
+                  }
+                  Map<dynamic, dynamic> posts =
+                      snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+
+                  List<Widget> postWidgets =
+                      posts.entries.map((entry) {
+                        return PostWidget(
+                          username: entry.value["username"] ?? "nic",
+                          city: entry.value["location"] ?? "nic",
+                          timestamp: entry.value["timestamp"] != null ? DateTime.parse(entry.value["timestamp"]) : DateTime.now(),
+                          content: entry.value["description"] ?? "nic",
+                          likeScore: entry.value["likescore"] ?? "nic",
+                        );
+                      }).toList();
+
+                  return Column(children: postWidgets);
+                },
               ),
             ],
           ),
