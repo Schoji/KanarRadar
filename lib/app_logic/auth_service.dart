@@ -13,6 +13,8 @@ class AuthService extends ChangeNotifier {
       email: email,
       password: password,
     );
+
+    notifyListeners();
   }
 
   Future<UserCredential> createAccount({
@@ -28,5 +30,6 @@ class AuthService extends ChangeNotifier {
 
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+    notifyListeners();
   }
 }

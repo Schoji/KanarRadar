@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kontrole/views/pages/welcome_page.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/views/pages/welcome_page.dart';
+import 'package:kontrole/views/pages/login_page.dart';
 import 'package:kontrole/views/pages/app_loading_page.dart';
 import 'package:kontrole/views/widget_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PageManager extends StatelessWidget {
-  const PageManager({super.key, this.pageIfNotConnected});
+  final bool wasOpenedBefore;
 
-  final Widget? pageIfNotConnected;
+  PageManager({super.key, required this.wasOpenedBefore});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +20,12 @@ class PageManager extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: authService.authStateChanges,
       builder: (context, snapshot) {
-        print("Auth state changed: ${snapshot.data}");
-
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return AppLoadingPage();
+          return const AppLoadingPage();
         } else if (snapshot.hasData) {
           return const WidgetTree();
         } else {
-          return pageIfNotConnected ?? const WelcomePage();
+          return wasOpenedBefore ? const LoginPage() : const WelcomePage();
         }
       },
     );

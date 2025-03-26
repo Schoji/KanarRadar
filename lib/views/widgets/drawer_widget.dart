@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:kontrole/views/pages/welcome_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:kontrole/app_logic/auth_service.dart';
+import 'package:kontrole/app_logic/page_manager.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -10,6 +14,27 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  String errorMessage = '';
+
+  void logout() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signOut();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PageManager(wasOpenedBefore: true),
+        ),
+      );
+    } on FirebaseAuthException catch (error) {
+      setState(() {
+        errorMessage = error.message ?? "Wystąpił błąd";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -41,15 +66,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ],
                 ),
 
-                FilledButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => WelcomePage()),
-                    );
-                  },
-                  child: Text("Logout"),
-                ),
+                FilledButton(onPressed: logout, child: Text("Logout")),
               ],
             ),
           ),
