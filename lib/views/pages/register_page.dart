@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/login_page.dart';
-import 'package:kontrole/views/widget_tree.dart';
+import 'package:kontrole/app_logic/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,6 +12,30 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  String errorMessage = '';
+
+  @override
+  void dispose() {
+    controllerEmail.dispose();
+    controllerPassword.dispose();
+    super.dispose();
+  }
+
+  void register() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await authService.value.createAccount(
+          email: controllerEmail.text.trim(),
+          password: controllerPassword.text.trim(),
+        );
+      } on FirebaseAuthException catch (error) {
+        setState(() {
+          errorMessage = error.message ?? "There is an error";
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,56 +55,70 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text("Logo", style: TextStyle(fontSize: 48)),
                 ),
               ),
-              TextField(
-                controller: controllerEmail,
-                decoration: InputDecoration(
-                  hintText: "Email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    // potem trzeba bedzie zrobic osobna classe dla inputu tekstowego bo tak porządek w codzie
+                    TextFormField(
+                      controller: controllerEmail,
+                      decoration: InputDecoration(
+                        hintText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "E-mail jest wymagany";
+                        }
+                        if (!RegExp(
+                          r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+                        ).hasMatch(value)) {
+                          return "Podaj poprawny e-mail";
+                        }
+                        return null;
+                      },
+                      onEditingComplete: () {
+                        setState(() {});
+                      },
+                    ),
+                    TextFormField(
+                      controller: controllerPassword,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Hasło jest wymagane";
+                        }
+                        if (value.length < 6) {
+                          return "Hasło musi mieć co najmniej 6 znaków";
+                        }
+                        return null;
+                      },
+                      onEditingComplete: () {
+                        setState(() {});
+                      },
+                      obscureText: true,
+                    ),
+                  ],
                 ),
-                onEditingComplete: () {
-                  setState(() {});
-                },
-              ),
-              TextField(
-                controller: controllerPassword,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                onEditingComplete: () {
-                  setState(() {});
-                },
               ),
               FilledButton(
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => WidgetTree()),
-                    (route) => false,
-                  );
+                  register();
                 },
                 child: Text("Register"),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50.0),
-                ),
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                    (route) => false,
-                  );
-                },
-                child: Text("Already have an account?"),
-              ),
+              const SizedBox(height: 10),
+              Text(errorMessage, style: TextStyle(color: Colors.redAccent)),
             ],
           ),
         ),
