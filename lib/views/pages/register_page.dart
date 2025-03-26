@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:kontrole/app_logic/auth_service.dart';
+import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,28 +13,45 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController controllerUsername = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
+  TextEditingController controllerRepeatPassword = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
   String errorMessage = '';
 
   @override
   void dispose() {
+    controllerUsername.dispose();
     controllerEmail.dispose();
     controllerPassword.dispose();
+    controllerRepeatPassword.dispose();
     super.dispose();
   }
 
   void register() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     if (formKey.currentState!.validate()) {
       try {
-        await authService.value.createAccount(
+        await authService.createAccount(
           email: controllerEmail.text.trim(),
           password: controllerPassword.text.trim(),
         );
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('wasOpenedBefore', true);
+
+        bool wasOpenedBefore = prefs.getBool('wasOpenedBefore') ?? false;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PageManager(wasOpenedBefore: wasOpenedBefore),
+          ),
+        );
       } on FirebaseAuthException catch (error) {
         setState(() {
-          errorMessage = error.message ?? "There is an error";
+          errorMessage = error.message ?? "Wystąpił błąd";
         });
       }
     }
@@ -45,21 +65,41 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
-            spacing: 10,
             children: [
               Container(
-                width: 200,
-                height: 200,
-                color: Colors.red,
                 child: Center(
-                  child: Text("Logo", style: TextStyle(fontSize: 48)),
+                  child: Image.asset(
+                    'assets/lotties/byczek.jpeg',
+                    height: 200,
+                    width: 200,
+                  ),
                 ),
               ),
+              const SizedBox(height: 20),
+
               Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    // potem trzeba bedzie zrobic osobna classe dla inputu tekstowego bo tak porządek w codzie
+                    // nazwa
+                    TextFormField(
+                      controller: controllerUsername,
+                      decoration: InputDecoration(
+                        hintText: "Username",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Nazwa użytkownika jest wymagana";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+
+                    // e-mail
                     TextFormField(
                       controller: controllerEmail,
                       decoration: InputDecoration(
@@ -79,12 +119,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                         return null;
                       },
-                      onEditingComplete: () {
-                        setState(() {});
-                      },
                     ),
+                    const SizedBox(height: 10),
+
+                    // hasło
                     TextFormField(
                       controller: controllerPassword,
+                      obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Password",
                         border: OutlineInputBorder(
@@ -100,24 +141,43 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                         return null;
                       },
-                      onEditingComplete: () {
-                        setState(() {});
-                      },
+                    ),
+                    const SizedBox(height: 10),
+
+                    // powtórz hasło
+                    TextFormField(
+                      controller: controllerRepeatPassword,
                       obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: "Repeat Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Powtórzenie hasła jest wymagane";
+                        }
+                        if (value != controllerPassword.text) {
+                          return "Hasła nie są identyczne";
+                        }
+                        return null;
+                      },
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+
               FilledButton(
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: () {
-                  register();
-                },
+                onPressed: register,
                 child: Text("Register"),
               ),
               const SizedBox(height: 10),
+
               Text(errorMessage, style: TextStyle(color: Colors.redAccent)),
             ],
           ),
