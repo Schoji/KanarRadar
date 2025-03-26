@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/views/pages/welcome_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/app_logic/auth_service.dart';

@@ -42,7 +42,6 @@ class _RegisterPageState extends State<RegisterPage> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('wasOpenedBefore', true);
 
-        // Pobieramy wartość wasOpenedBefore
         bool wasOpenedBefore = prefs.getBool('wasOpenedBefore') ?? false;
         Navigator.pushReplacement(
           context,

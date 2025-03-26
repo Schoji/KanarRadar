@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
+import 'package:kontrole/views/pages/addpost_page.dart';
 
 class NavbarWidget extends StatelessWidget {
   const NavbarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     return ValueListenableBuilder(
       valueListenable: selectedPageNotifier,
       builder: (context, selectedPage, child) {
@@ -40,20 +40,23 @@ class NavbarWidget extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.add, size: 30),
                       onPressed: () {
-                        selectedPageNotifier.value = 2;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddPost()),
+                        );
                       },
-                      color:  Colors.white,
+                      color: Colors.white,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.person),
+                    icon: Icon(Icons.notifications),
                     onPressed: () {
                       selectedPageNotifier.value = 3;
                     },
                     color: selectedPage == 3 ? Colors.teal : Colors.grey,
                   ),
                   IconButton(
-                    icon: Icon(Icons.train),
+                    icon: Icon(Icons.person_2_rounded),
                     onPressed: () {
                       selectedPageNotifier.value = 4;
                     },

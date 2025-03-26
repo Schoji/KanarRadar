@@ -6,7 +6,6 @@ import 'package:kontrole/views/pages/login_page.dart';
 import 'package:kontrole/views/pages/app_loading_page.dart';
 import 'package:kontrole/views/widget_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PageManager extends StatelessWidget {
   final bool wasOpenedBefore;
