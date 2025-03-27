@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/forgotpassword_page.dart';
+import 'package:kontrole/data/constants.dart';
+import 'package:kontrole/views/pages/authentication/forgotpassword_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/page_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -60,13 +61,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             spacing: 10,
             children: [
-              Container(
-                child: Center(
-                  child: Image.asset(
-                    'assets/lotties/byczek.jpeg',
-                    height: 200,
-                    width: 200,
-                  ),
+              Center(
+                child: Image.asset(
+                  KImages.logoPath,
+                  height: 200,
+                  width: 200,
                 ),
               ),
               Form(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/views/pages/addpost_page.dart';
+import 'package:kontrole/views/pages/posts/addpost_page.dart';
 
 class NavbarWidget extends StatelessWidget {
   const NavbarWidget({super.key});

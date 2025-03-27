@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/constants.dart';
-import 'package:kontrole/app_logic/database_service.dart';
+import 'package:kontrole/logic/database_service.dart';
 import 'package:kontrole/views/widget_tree.dart';
 
 class AddPost extends StatefulWidget {

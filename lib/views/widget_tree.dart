@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/views/pages/addpost_page.dart';
-import 'package:kontrole/views/pages/home_page.dart';
-import 'package:kontrole/views/pages/map_page.dart';
-import 'package:kontrole/views/pages/notifications_page.dart';
-import 'package:kontrole/views/pages/profile_page.dart';
+import 'package:kontrole/views/pages/posts/addpost_page.dart';
+import 'package:kontrole/views/pages/home/home_page.dart';
+import 'package:kontrole/views/pages/maps/map_page.dart';
+import 'package:kontrole/views/pages/notifications/notifications_page.dart';
+import 'package:kontrole/views/pages/profile/profile_page.dart';
 import 'package:kontrole/views/widgets/drawer_widget.dart';
 import 'package:kontrole/views/widgets/navbar_widget.dart';
 

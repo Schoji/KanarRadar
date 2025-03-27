@@ -1,10 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/widgets/post_widget.dart';
-import 'package:kontrole/views/widgets/posttype_widget.dart';
+import 'package:kontrole/views/widgets/posts/post_widget.dart';
+import 'package:kontrole/views/widgets/posts/posttype_widget.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();

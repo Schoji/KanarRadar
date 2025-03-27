@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/getstarted_page.dart';
+import 'package:kontrole/views/pages/welcome/getstarted_page.dart';
 import 'package:lottie/lottie.dart';
 
 class OnboardingPage extends StatelessWidget {

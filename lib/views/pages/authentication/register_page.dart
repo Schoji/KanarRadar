@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kontrole/data/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/page_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -66,13 +67,11 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Center(
           child: Column(
             children: [
-              Container(
-                child: Center(
-                  child: Image.asset(
-                    'assets/lotties/byczek.jpeg',
-                    height: 200,
-                    width: 200,
-                  ),
+              Center(
+                child: Image.asset(
+                  KImages.logoPath,
+                  height: 200,
+                  width: 200,
                 ),
               ),
               const SizedBox(height: 20),
