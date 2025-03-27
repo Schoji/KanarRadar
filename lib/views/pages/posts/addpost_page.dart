@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/constants.dart';
-import 'package:kontrole/app_logic/database_service.dart';
+import 'package:kontrole/data/notifiers.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/database_service.dart';
 import 'package:kontrole/views/widget_tree.dart';
 
 class AddPost extends StatefulWidget {
@@ -11,13 +13,39 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
+  bool? locationChecked = true;
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerDescription = TextEditingController();
     TextEditingController controllerLocation = TextEditingController();
+    TextEditingController controllerDirection = TextEditingController();
+
     Color secondaryTextColor = Theme.of(
       context,
     ).colorScheme.onSurface.withValues(alpha: 0.6);
+
+    void publishPost() {
+      DatabaseService().create(
+        path: "post",
+        data: {
+          'username':
+              AuthService().currentUser?.email?.split("@")[0] ??
+              "Nieznany uzytkownik",
+          "timestamp": DateTime.now().toString(),
+          "description": controllerDescription.text,
+          "line": controllerLocation.text,
+          "likescore": 0,
+          "location": selectedCityNotifier.value,
+          "direction": controllerDirection.value,
+        },
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => WidgetTree()),
+        (route) => false,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,27 +59,7 @@ class _AddPostState extends State<AddPost> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: FilledButton(
-              onPressed: () {
-                DatabaseService().create(
-                  path: "post",
-                  data: {
-                    'username': "paruwa32",
-                    "timestamp": DateTime.now().toString(),
-                    "description": controllerDescription.text,
-                    "line": controllerLocation.text,
-                    "likescore": 0,
-                    "location": "Szczecin",
-                  },
-                );
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => WidgetTree()),
-                  (route) => false,
-                );
-              },
-              child: Text("Post"),
-            ),
+            child: FilledButton(onPressed: publishPost, child: Text("Post")),
           ),
         ],
       ),
@@ -110,6 +118,32 @@ class _AddPostState extends State<AddPost> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
+                ),
+              ),
+              TextField(
+                controller: controllerDirection,
+                decoration: InputDecoration(
+                  labelText: "Direction",
+                  labelStyle: TextStyle(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text("Share your location"),
+                    Checkbox(
+                      value: locationChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          locationChecked = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],

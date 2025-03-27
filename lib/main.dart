@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:kontrole/logic/page_manager.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
+import 'package:kontrole/logic/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';

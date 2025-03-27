@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/login_page.dart';
-import 'package:kontrole/views/pages/register_page.dart';
+import 'package:kontrole/views/pages/authentication/login_page.dart';
+import 'package:kontrole/views/pages/authentication/register_page.dart';
 import 'package:lottie/lottie.dart';
 
 class GetstartedPage extends StatelessWidget {

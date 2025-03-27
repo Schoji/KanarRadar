@@ -1,45 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/forgotpassword_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kontrole/data/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/page_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController controllerUsername = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
+  TextEditingController controllerRepeatPassword = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
   String errorMessage = '';
 
   @override
   void dispose() {
+    controllerUsername.dispose();
     controllerEmail.dispose();
     controllerPassword.dispose();
+    controllerRepeatPassword.dispose();
     super.dispose();
   }
 
-  void login() async {
+  void register() async {
     final authService = Provider.of<AuthService>(context, listen: false);
 
     if (formKey.currentState!.validate()) {
       try {
-        await authService.signIn(
+        await authService.createAccount(
+          name: controllerUsername.text.trim(),
           email: controllerEmail.text.trim(),
           password: controllerPassword.text.trim(),
         );
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('wasOpenedBefore', true);
 
+        bool wasOpenedBefore = prefs.getBool('wasOpenedBefore') ?? false;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => PageManager(wasOpenedBefore: true),
+            builder: (context) => PageManager(wasOpenedBefore: wasOpenedBefore),
           ),
         );
       } on FirebaseAuthException catch (error) {
@@ -58,22 +67,33 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
-            spacing: 10,
             children: [
-              Container(
-                child: Center(
-                  child: Image.asset(
-                    'assets/lotties/byczek.jpeg',
-                    height: 200,
-                    width: 200,
-                  ),
-                ),
+              Center(
+                child: Image.asset(KImages.logoPath, height: 200, width: 200),
               ),
+              const SizedBox(height: 20),
+
               Form(
                 key: formKey,
                 child: Column(
                   children: [
                     // nazwa
+                    TextFormField(
+                      controller: controllerUsername,
+                      decoration: InputDecoration(
+                        hintText: "Username",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Nazwa użytkownika jest wymagana";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
 
                     // e-mail
                     TextFormField(
@@ -121,30 +141,40 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 10),
 
                     // powtórz hasło
+                    TextFormField(
+                      controller: controllerRepeatPassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: "Repeat Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Powtórzenie hasła jest wymagane";
+                        }
+                        if (value != controllerPassword.text) {
+                          return "Hasła nie są identyczne";
+                        }
+                        return null;
+                      },
+                    ),
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+
               FilledButton(
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: login,
-                child: Text("Log in"),
+                onPressed: register,
+                child: Text("Register"),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50.0),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ForgotpasswordPage(),
-                    ),
-                  );
-                },
-                child: Text("Forgot password?"),
-              ),
+              const SizedBox(height: 10),
+
+              Text(errorMessage, style: TextStyle(color: Colors.redAccent)),
             ],
           ),
         ),

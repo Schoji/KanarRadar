@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/views/pages/welcome_page.dart';
+import 'package:kontrole/views/pages/welcome/welcome_page.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/views/pages/login_page.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/views/pages/authentication/login_page.dart';
 import 'package:kontrole/views/pages/app_loading_page.dart';
 import 'package:kontrole/views/widget_tree.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class PageManager extends StatelessWidget {
   final bool wasOpenedBefore;
 
-  PageManager({super.key, required this.wasOpenedBefore});
+  const PageManager({super.key, required this.wasOpenedBefore});
 
   @override
   Widget build(BuildContext context) {

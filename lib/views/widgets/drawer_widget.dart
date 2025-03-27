@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kontrole/views/widgets/city_selection_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/app_logic/auth_service.dart';
-import 'package:kontrole/app_logic/page_manager.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/page_manager.dart';
+
+//temp
+import 'package:kontrole/views/pages/welcome/getstarted_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -34,6 +38,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
   }
 
+  void logoutXD() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => GetstartedPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -46,7 +57,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               children: [
                 Column(
                   spacing: 10,
-                  children: [CircleAvatar(radius: 30), Text("John Doe")],
+                  children: [
+                    CircleAvatar(radius: 30),
+                    Text(AuthService().currentUser?.email ?? "Email"),
+                  ],
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -64,8 +78,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ),
                   ],
                 ),
-
-                FilledButton(onPressed: logout, child: Text("Logout")),
+                CitySelectionWidget(),
+                FilledButton(onPressed: logoutXD, child: Text("Logout")),
               ],
             ),
           ),
