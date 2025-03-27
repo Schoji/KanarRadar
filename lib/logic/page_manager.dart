@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class PageManager extends StatelessWidget {
   final bool wasOpenedBefore;
 
-  PageManager({super.key, required this.wasOpenedBefore});
+  const PageManager({super.key, required this.wasOpenedBefore});
 
   @override
   Widget build(BuildContext context) {
