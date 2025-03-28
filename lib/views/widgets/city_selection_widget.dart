@@ -4,7 +4,7 @@ import 'package:kontrole/data/notifiers.dart';
 class CitySelectionWidget extends StatefulWidget {
   const CitySelectionWidget({super.key});
 
- static List<String> cities = [
+  static List<String> cities = [
     "Białystok",
     "Bydgoszcz",
     "Częstochowa",
@@ -29,20 +29,18 @@ class CitySelectionWidget extends StatefulWidget {
 
   static List<DropdownMenuItem<String>> citiesEntries =
       List<DropdownMenuItem<String>>.generate(
-    cities.length,
-    (index) => DropdownMenuItem(
-      value: cities[index],
-      child: Text(cities[index]),
-    ),
-  );
+        cities.length,
+        (index) =>
+            DropdownMenuItem(value: cities[index], child: Text(cities[index])),
+      );
 
   @override
   State<CitySelectionWidget> createState() => _CitySelectionWidgetState();
 }
 
 class _CitySelectionWidgetState extends State<CitySelectionWidget> {
-  String selectedCity = selectedCityNotifier.value; 
- 
+  String selectedCity = selectedCityNotifier.value;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

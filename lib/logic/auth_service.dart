@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kontrole/models/user.dart';
+import 'package:kontrole/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService extends ChangeNotifier {
@@ -21,6 +21,7 @@ class AuthService extends ChangeNotifier {
 
   Future<UserCredential?> createAccount({
     required String name,
+    required String city,
     required String email,
     required String password,
   }) async {
@@ -36,7 +37,12 @@ class AuthService extends ChangeNotifier {
 
         firebaseAuth.currentUser;
 
-        UserModel newUser = UserModel(id: user.uid, name: name, email: email);
+        UserModel newUser = UserModel(
+          id: user.uid,
+          city: city,
+          name: name,
+          email: email,
+        );
         await firestoreDB
             .collection("users")
             .doc(user.uid)

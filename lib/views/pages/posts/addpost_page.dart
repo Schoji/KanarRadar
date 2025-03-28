@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/data/constants.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/database_service.dart';
 import 'package:kontrole/views/widget_tree.dart';
+import 'package:kontrole/data/constants.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -29,14 +29,13 @@ class _AddPostState extends State<AddPost> {
         path: "post",
         data: {
           'username':
-              AuthService().currentUser?.email?.split("@")[0] ??
-              "Nieznany uzytkownik",
+              AuthService().currentUser?.displayName ?? "Nieznany uzytkownik",
           "timestamp": DateTime.now().toString(),
           "description": controllerDescription.text,
           "line": controllerLocation.text,
           "likescore": 0,
           "location": selectedCityNotifier.value,
-          "direction": controllerDirection.value,
+          "direction": controllerDirection.text,
         },
       );
       Navigator.pushAndRemoveUntil(

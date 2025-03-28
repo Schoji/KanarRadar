@@ -59,7 +59,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   spacing: 10,
                   children: [
                     CircleAvatar(radius: 30),
-                    Text(AuthService().currentUser?.email ?? "Email"),
+                    Text(AuthService().currentUser?.displayName ?? "nazwa"),
                   ],
                 ),
                 SizedBox(height: 20),
