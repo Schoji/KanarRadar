@@ -4,6 +4,7 @@ import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/database_service.dart';
 import 'package:kontrole/views/widget_tree.dart';
 import 'package:kontrole/data/constants.dart';
+import 'package:kontrole/views/pages/posts/confirmation_page.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -24,24 +25,17 @@ class _AddPostState extends State<AddPost> {
       context,
     ).colorScheme.onSurface.withValues(alpha: 0.6);
 
-    void publishPost() {
-      DatabaseService().create(
-        path: "post",
-        data: {
-          'username':
-              AuthService().currentUser?.displayName ?? "Nieznany uzytkownik",
-          "timestamp": DateTime.now().toString(),
-          "description": controllerDescription.text,
-          "line": controllerLocation.text,
-          "likescore": 0,
-          "location": selectedCityNotifier.value,
-          "direction": controllerDirection.text,
-        },
-      );
-      Navigator.pushAndRemoveUntil(
+    void goToConfirmationPage() {
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WidgetTree()),
-        (route) => false,
+        MaterialPageRoute(
+          builder:
+              (context) => ConfirmPost(
+                description: controllerDescription.text,
+                location: controllerLocation.text,
+                direction: controllerDirection.text,
+              ),
+        ),
       );
     }
 
@@ -58,7 +52,10 @@ class _AddPostState extends State<AddPost> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: FilledButton(onPressed: publishPost, child: Text("Post")),
+            child: FilledButton(
+              onPressed: goToConfirmationPage,
+              child: Text("Next"),
+            ),
           ),
         ],
       ),
@@ -68,26 +65,6 @@ class _AddPostState extends State<AddPost> {
           child: Column(
             spacing: 20,
             children: [
-              Row(
-                spacing: 20,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(KImages.defaultProfileImage),
-                    radius: 24,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "nomad213",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      Text("9:41", style: TextStyle(color: secondaryTextColor)),
-                    ],
-                  ),
-                ],
-              ),
-
               TextField(
                 controller: controllerDescription,
                 minLines: 5,
