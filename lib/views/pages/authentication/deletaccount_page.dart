@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/data/constants.dart';
-import 'package:kontrole/views/pages/authentication/forgotpassword_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kontrole/logic/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'package:kontrole/logic/page_manager.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import 'package:kontrole/data/constants.dart';
+
+class DeletaccountPage extends StatefulWidget {
+  const DeletaccountPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<DeletaccountPage> createState() => _DeletaccountPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _DeletaccountPageState extends State<DeletaccountPage> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
 
@@ -27,28 +27,26 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void login() async {
+  void deleteAccount() async {
     final authService = Provider.of<AuthService>(context, listen: false);
-
-    if (formKey.currentState!.validate()) {
-      try {
-        await authService.signIn(
-          email: controllerEmail.text.trim(),
-          password: controllerPassword.text.trim(),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PageManager(wasOpenedBefore: true),
-          ),
-        );
-      } on FirebaseAuthException catch (error) {
-        setState(() {
-          errorMessage = error.message ?? "Wystąpił błąd";
-        });
-      }
+    try {
+      await authService.deleteAccount(
+        email: controllerEmail.text.trim(),
+        password: controllerPassword.text.trim(),
+      );
+      popPage();
+    } catch (e) {
+      print(e.toString());
     }
+  }
+
+  void popPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PageManager(wasOpenedBefore: false),
+      ),
+    );
   }
 
   @override
@@ -61,8 +59,13 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             spacing: 10,
             children: [
+              Text("Delete my account"),
               Center(
-                child: Image.asset(KImages.logoPath, height: 200, width: 200),
+                child: SvgPicture.asset(
+                  KImages.deleteAccountImage,
+                  height: 100,
+                  width: 100,
+                ),
               ),
               Form(
                 key: formKey,
@@ -119,27 +122,15 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+              Spacer(),
               FilledButton(
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: login,
-                child: Text("Log in"),
+                onPressed: deleteAccount,
+                child: Text("Delete Permanently"),
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50.0),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ForgotpasswordPage(),
-                    ),
-                  );
-                },
-                child: Text("Forgot password?"),
-              ),
+              const SizedBox(height: 40),
             ],
           ),
         ),

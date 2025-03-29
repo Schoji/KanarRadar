@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/logic/auth_service.dart';
-import 'package:kontrole/logic/database_service.dart';
-import 'package:kontrole/views/widget_tree.dart';
-import 'package:kontrole/data/constants.dart';
 import 'package:kontrole/views/pages/posts/confirmation_page.dart';
 
 class AddPost extends StatefulWidget {

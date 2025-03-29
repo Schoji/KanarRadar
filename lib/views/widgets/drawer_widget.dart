@@ -5,6 +5,7 @@ import 'package:kontrole/views/widgets/city_selection_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
+import 'package:kontrole/views/pages/authentication/deletaccount_page.dart';
 
 //temp
 import 'package:kontrole/views/pages/welcome/getstarted_page.dart';
@@ -80,6 +81,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
                 CitySelectionWidget(),
                 FilledButton(onPressed: logoutXD, child: Text("Logout")),
+                Spacer(),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeletaccountPage(),
+                      ),
+                    );
+                  },
+                  child: Text("Delete Account"),
+                ),
               ],
             ),
           ),
