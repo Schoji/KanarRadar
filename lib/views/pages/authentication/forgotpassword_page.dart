@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/views/widget_tree.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:kontrole/logic/page_manager.dart';
 
 class ForgotpasswordPage extends StatefulWidget {
   const ForgotpasswordPage({super.key});
@@ -10,7 +14,39 @@ class ForgotpasswordPage extends StatefulWidget {
 
 class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
   TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  String errorMessage = '';
+
+  @override
+  void dispose() {
+    controllerEmail.dispose();
+    super.dispose();
+  }
+
+  void resetXD() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => WidgetTree()),
+      (route) => false,
+    );
+  }
+
+  void sendEmailWithPassword() async {
+    // walidacja z formularza
+    final authService = Provider.of<AuthService>(context, listen: false);
+    await authService.resetPassword(email: controllerEmail.text.trim());
+    // jakaś wiadomość ze email zostal wyslany ??
+    popPage();
+  }
+
+  void popPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PageManager(wasOpenedBefore: true),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +78,12 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                   setState(() {});
                 },
               ),
-              
+
               TextButton(
                 style: TextButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => WidgetTree()),
-                    (route) => false,
-                  );
-                },
+                onPressed: resetXD,
                 child: Text("Change password"),
               ),
             ],
