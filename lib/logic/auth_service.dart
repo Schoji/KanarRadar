@@ -82,8 +82,13 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> changeUsername({required String username}) async {
-    await currentUser!.updateDisplayName(username);
-    notifyListeners();
+    if (currentUser != null) {
+      await currentUser!.updateDisplayName(username);
+      final uid = currentUser!.uid;
+      await firestoreDB.collection("users").doc(uid).update({"name": username});
+
+      notifyListeners();
+    }
   }
 
   Future<void> resetCurrentPassword({
