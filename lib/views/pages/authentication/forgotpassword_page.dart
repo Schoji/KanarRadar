@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/page_manager.dart';
+import 'package:kontrole/views/pages/authentication/login_page.dart';
 
 class ForgotpasswordPage extends StatefulWidget {
   const ForgotpasswordPage({super.key});
@@ -42,9 +43,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
   void popPage() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => PageManager(wasOpenedBefore: true),
-      ),
+      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 

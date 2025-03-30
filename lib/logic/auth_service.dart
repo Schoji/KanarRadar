@@ -83,6 +83,7 @@ class AuthService extends ChangeNotifier {
 
   Future<void> changeUsername({required String username}) async {
     await currentUser!.updateDisplayName(username);
+    notifyListeners();
   }
 
   Future<void> resetCurrentPassword({

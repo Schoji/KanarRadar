@@ -82,7 +82,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ],
                 ),
                 CitySelectionWidget(),
-                FilledButton(onPressed: logoutXD, child: Text("Logout")),
+                FilledButton(onPressed: logout, child: Text("Logout")),
                 Spacer(),
                 FilledButton(
                   onPressed: () {

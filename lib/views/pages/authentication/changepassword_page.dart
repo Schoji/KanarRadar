@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:provider/provider.dart';
-import 'package:kontrole/logic/page_manager.dart';
 
 import 'package:kontrole/data/constants.dart';
 
@@ -28,7 +28,26 @@ class _ChangepasswordPageState extends State<ChangepasswordPage> {
     super.dispose();
   }
 
-  void changePassword() {}
+  void changePassword() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.resetCurrentPassword(
+        currentPassword: controllerCurrentPassword.text.trim(),
+        newPassword: controllerNewPassword.text.trim(),
+        email: controllerEmail.text.trim(),
+      );
+      popPage();
+    } on FirebaseAuthException catch (error) {
+      setState(() {
+        errorMessage = error.message ?? "Wystąpił błąd pdoczas zmiany hasla";
+      });
+    }
+  }
+
+  void popPage() {
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +71,6 @@ class _ChangepasswordPageState extends State<ChangepasswordPage> {
                 key: formKey,
                 child: Column(
                   children: [
-                    // nazwa
-
                     // e-mail
                     TextFormField(
                       controller: controllerEmail,
@@ -101,7 +118,7 @@ class _ChangepasswordPageState extends State<ChangepasswordPage> {
 
                     // nowe haslo
                     TextFormField(
-                      controller: controllerCurrentPassword,
+                      controller: controllerNewPassword,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "New Password",
