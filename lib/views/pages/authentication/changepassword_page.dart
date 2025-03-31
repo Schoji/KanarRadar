@@ -1,54 +1,52 @@
-import 'package:flutter/material.dart';
-import 'package:kontrole/data/constants.dart';
-import 'package:kontrole/views/pages/authentication/forgotpassword_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kontrole/logic/auth_service.dart';
-import 'package:kontrole/logic/page_manager.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import 'package:kontrole/data/constants.dart';
+
+class ChangepasswordPage extends StatefulWidget {
+  const ChangepasswordPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ChangepasswordPage> createState() => _ChangepasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ChangepasswordPageState extends State<ChangepasswordPage> {
   TextEditingController controllerEmail = TextEditingController();
-  TextEditingController controllerPassword = TextEditingController();
-
+  TextEditingController controllerCurrentPassword = TextEditingController();
+  TextEditingController controllerNewPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String errorMessage = '';
 
   @override
   void dispose() {
     controllerEmail.dispose();
-    controllerPassword.dispose();
+    controllerCurrentPassword.dispose();
+    controllerNewPassword.dispose();
     super.dispose();
   }
 
-  void login() async {
+  void changePassword() async {
     final authService = Provider.of<AuthService>(context, listen: false);
 
-    if (formKey.currentState!.validate()) {
-      try {
-        await authService.signIn(
-          email: controllerEmail.text.trim(),
-          password: controllerPassword.text.trim(),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PageManager(wasOpenedBefore: true),
-          ),
-        );
-      } on FirebaseAuthException catch (error) {
-        setState(() {
-          errorMessage = error.message ?? "Wystąpił błąd";
-        });
-      }
+    try {
+      await authService.resetCurrentPassword(
+        currentPassword: controllerCurrentPassword.text.trim(),
+        newPassword: controllerNewPassword.text.trim(),
+        email: controllerEmail.text.trim(),
+      );
+      popPage();
+    } on FirebaseAuthException catch (error) {
+      setState(() {
+        errorMessage = error.message ?? "Wystąpił błąd pdoczas zmiany hasla";
+      });
     }
+  }
+
+  void popPage() {
+    Navigator.pop(context);
   }
 
   @override
@@ -61,15 +59,18 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             spacing: 10,
             children: [
+              Text("Change password"),
               Center(
-                child: Image.asset(KImages.logoPath, height: 200, width: 200),
+                child: SvgPicture.asset(
+                  KImages.changeImage,
+                  height: 100,
+                  width: 100,
+                ),
               ),
               Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    // nazwa
-
                     // e-mail
                     TextFormField(
                       controller: controllerEmail,
@@ -95,10 +96,10 @@ class _LoginPageState extends State<LoginPage> {
 
                     // hasło
                     TextFormField(
-                      controller: controllerPassword,
+                      controller: controllerCurrentPassword,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: "Password",
+                        hintText: "Current Password",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -115,7 +116,27 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 10),
 
-                    // powtórz hasło
+                    // nowe haslo
+                    TextFormField(
+                      controller: controllerNewPassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: "New Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Hasło jest wymagane";
+                        }
+                        if (value.length < 6) {
+                          return "Hasło musi mieć co najmniej 6 znaków";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -123,22 +144,8 @@ class _LoginPageState extends State<LoginPage> {
                 style: FilledButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: login,
-                child: Text("Log in"),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50.0),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ForgotpasswordPage(),
-                    ),
-                  );
-                },
-                child: Text("Forgot password?"),
+                onPressed: changePassword,
+                child: Text("Change"),
               ),
             ],
           ),

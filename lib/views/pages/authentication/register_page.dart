@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kontrole/views/widgets/city_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -18,13 +19,14 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
   TextEditingController controllerRepeatPassword = TextEditingController();
-
+  TextEditingController controllerCity = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String errorMessage = '';
 
   @override
   void dispose() {
     controllerUsername.dispose();
+    controllerCity.dispose();
     controllerEmail.dispose();
     controllerPassword.dispose();
     controllerRepeatPassword.dispose();
@@ -37,6 +39,8 @@ class _RegisterPageState extends State<RegisterPage> {
     if (formKey.currentState!.validate()) {
       try {
         await authService.createAccount(
+          name: controllerUsername.text.trim(),
+          city: controllerCity.text.trim(),
           email: controllerEmail.text.trim(),
           password: controllerPassword.text.trim(),
         );
@@ -68,11 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             children: [
               Center(
-                child: Image.asset(
-                  KImages.logoPath,
-                  height: 200,
-                  width: 200,
-                ),
+                child: Image.asset(KImages.logoPath, height: 200, width: 200),
               ),
               const SizedBox(height: 20),
 
@@ -97,7 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 10),
-
+                    CityPickerDropdown(controller: controllerCity),
+                    //CitySelectionWidget(),
+                    const SizedBox(height: 10),
                     // e-mail
                     TextFormField(
                       controller: controllerEmail,

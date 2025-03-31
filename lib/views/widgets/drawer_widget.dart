@@ -6,6 +6,12 @@ import 'package:kontrole/views/widgets/settings/color_selection_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
+import 'package:kontrole/views/pages/authentication/deletaccount_page.dart';
+import 'package:kontrole/views/pages/authentication/changename_page.dart';
+import 'package:kontrole/views/pages/authentication/changepassword_page.dart';
+
+//temp
+import 'package:kontrole/views/pages/welcome/getstarted_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -36,6 +42,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
   }
 
+  void logoutXD() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => GetstartedPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -50,7 +63,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   spacing: 10,
                   children: [
                     CircleAvatar(radius: 30),
-                    Text(AuthService().currentUser?.email ?? "Email"),
+                    Text(AuthService().currentUser?.displayName ?? "nazwa"),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -72,6 +85,40 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 CitySelectionWidget(),
                 ColorSelectionWidget(),
                 FilledButton(onPressed: logout, child: Text("Logout")),
+                Spacer(),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangenamePage()),
+                    );
+                  },
+                  child: Text("Change name"),
+                ),
+                Spacer(),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangepasswordPage(),
+                      ),
+                    );
+                  },
+                  child: Text("Change password"),
+                ),
+                Spacer(),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeletaccountPage(),
+                      ),
+                    );
+                  },
+                  child: Text("Delete Account"),
+                ),
               ],
             ),
           ),

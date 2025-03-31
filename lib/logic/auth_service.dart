@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kontrole/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firestoreDB = FirebaseFirestore.instance;
 
   User? get currentUser => firebaseAuth.currentUser;
-
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
   Future<void> signIn({required String email, required String password}) async {
@@ -17,19 +19,88 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<UserCredential> createAccount({
+  Future<UserCredential?> createAccount({
+    required String name,
+    required String city,
     required String email,
     required String password,
   }) async {
-    UserCredential userCredential = await firebaseAuth
-        .createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    notifyListeners();
-    return userCredential;
+      User? user = userCredential.user;
+
+      if (user != null) {
+        await user.updateDisplayName(name);
+        await user.reload();
+
+        firebaseAuth.currentUser;
+
+        UserModel newUser = UserModel(
+          id: user.uid,
+          city: city,
+          name: name,
+          email: email,
+        );
+        await firestoreDB
+            .collection("users")
+            .doc(user.uid)
+            .set(newUser.toMap());
+
+        notifyListeners();
+      }
+
+      return userCredential;
+    } catch (e) {
+      print("Błąd podczas rejestracji: ${e.toString()}");
+      return null;
+    }
   }
 
   Future<void> signOut() async {
     await firebaseAuth.signOut();
     notifyListeners();
+  }
+
+  Future<void> deleteAccount({
+    required String email,
+    required String password,
+  }) async {
+    AuthCredential credential = EmailAuthProvider.credential(
+      email: email,
+      password: password,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.delete();
+    await firebaseAuth.signOut();
+    notifyListeners();
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> changeUsername({required String username}) async {
+    if (currentUser != null) {
+      await currentUser!.updateDisplayName(username);
+      final uid = currentUser!.uid;
+      await firestoreDB.collection("users").doc(uid).update({"name": username});
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> resetCurrentPassword({
+    required String currentPassword,
+    required String newPassword,
+    required String email,
+  }) async {
+    AuthCredential credential = EmailAuthProvider.credential(
+      email: email,
+      password: currentPassword,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.updatePassword(newPassword);
   }
 }
