@@ -23,19 +23,19 @@ class NavbarWidget extends StatelessWidget {
                     onPressed: () {
                       selectedPageNotifier.value = 0;
                     },
-                    color: selectedPage == 0 ? Colors.teal : Colors.grey,
+                    color: selectedPage == 0 ? accentColor.value : Colors.grey,
                   ),
                   IconButton(
                     icon: Icon(Icons.map),
                     onPressed: () {
                       selectedPageNotifier.value = 1;
                     },
-                    color: selectedPage == 1 ? Colors.teal : Colors.grey,
+                    color: selectedPage == 1 ? accentColor.value : Colors.grey,
                   ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.teal,
+                      color: accentColor.value,
                     ),
                     child: IconButton(
                       icon: Icon(Icons.add, size: 30),
@@ -53,14 +53,14 @@ class NavbarWidget extends StatelessWidget {
                     onPressed: () {
                       selectedPageNotifier.value = 3;
                     },
-                    color: selectedPage == 3 ? Colors.teal : Colors.grey,
+                    color: selectedPage == 3 ? accentColor.value : Colors.grey,
                   ),
                   IconButton(
                     icon: Icon(Icons.person_2_rounded),
                     onPressed: () {
                       selectedPageNotifier.value = 4;
                     },
-                    color: selectedPage == 4 ? Colors.teal : Colors.grey,
+                    color: selectedPage == 4 ? accentColor.value : Colors.grey,
                   ),
                 ],
               ),

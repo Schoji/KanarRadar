@@ -20,7 +20,7 @@ List<String> pageLabels = [
   "Map",
   "Add post",
   "Notifications",
-  "Profile",
+  "Account",
 ];
 
 class WidgetTree extends StatelessWidget {

@@ -31,18 +31,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: isDarkModeNotifier,
-      builder: (context, isDarkMode, child) {
-        return MaterialApp(
-          title: 'Kanar Radar',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.teal,
-              brightness: isDarkMode ? Brightness.dark : Brightness.light,
-            ),
-          ),
-          debugShowCheckedModeBanner: false,
-          home: PageManager(wasOpenedBefore: wasOpenedBefore),
+      valueListenable: accentColor,
+      builder: (context, accent, child) {
+        return ValueListenableBuilder(
+          valueListenable: isDarkModeNotifier,
+          builder: (context, isDarkMode, child) {
+            return MaterialApp(
+              title: 'Kanar Radar',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: accentColor.value,
+                  brightness: isDarkMode ? Brightness.dark : Brightness.light,
+                ),
+              ),
+              debugShowCheckedModeBanner: false,
+              home: PageManager(wasOpenedBefore: wasOpenedBefore),
+            );
+          },
         );
       },
     );

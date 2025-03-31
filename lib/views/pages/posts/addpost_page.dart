@@ -36,7 +36,7 @@ class _AddPostState extends State<AddPost> {
           "line": controllerLocation.text,
           "likescore": 0,
           "location": selectedCityNotifier.value,
-          "direction": controllerDirection.value,
+          "direction": controllerDirection.text,
         },
       );
       Navigator.pushAndRemoveUntil(

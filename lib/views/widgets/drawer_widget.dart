@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kontrole/views/widgets/city_selection_widget.dart';
+import 'package:kontrole/views/widgets/settings/color_selection_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
@@ -69,6 +70,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ],
                 ),
                 CitySelectionWidget(),
+                ColorSelectionWidget(),
                 FilledButton(onPressed: logout, child: Text("Logout")),
               ],
             ),
