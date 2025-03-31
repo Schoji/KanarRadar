@@ -55,6 +55,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
+            //SizedBox???x
             spacing: 10,
             children: [
               Container(
@@ -82,7 +83,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                 style: TextButton.styleFrom(
                   minimumSize: Size(double.infinity, 50.0),
                 ),
-                onPressed: resetXD,
+                onPressed: sendEmailWithPassword,
                 child: Text("Change password"),
               ),
             ],
