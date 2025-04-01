@@ -31,7 +31,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
   }
 
   void sendEmailWithPassword() async {
-    // walidacja z formularza
+    // walidacja z formularza potrzebna XD
     final authService = Provider.of<AuthService>(context, listen: false);
     await authService.resetPassword(email: controllerEmail.text.trim());
     // jakaś wiadomość ze email zostal wyslany ??

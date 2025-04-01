@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:kontrole/views/widgets/settings/section_widget.dart';
 import 'package:kontrole/views/widgets/settings/settings_button_widget.dart';
+import 'package:kontrole/views/pages/profile/set_picture_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -24,47 +25,60 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
+                    child: Row(
                       spacing: 20,
                       children: [
                         Row(
                           spacing: 60,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 54,
-                              child: Text("J", style: TextStyle(fontSize: 54)),
-                            ),
                             Column(
                               spacing: 10,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  spacing: 10,
-                                  children: [
-                                    Text(
-                                      "John Doe",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
+                                CircleAvatar(
+                                  radius: 54,
+                                  child: Text(
+                                    "J",
+                                    style: TextStyle(fontSize: 54),
+                                  ),
                                 ),
-                                Row(
-                                  spacing: 10,
-                                  children: [Text("John.doe@wp.pl")],
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SetPicturePage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Set picture",
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("Likes"),
-                            Text("Comments"),
-                            Text("Shares"),
+
+                            Column(
+                              spacing: 10,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "John Doe",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+
+                                Text("John.doe@wp.pl"),
+                                Text("Likes"),
+                              ],
+                            ),
                           ],
                         ),
                       ],
