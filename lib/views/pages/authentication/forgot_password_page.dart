@@ -4,14 +4,14 @@ import 'package:kontrole/logic/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/views/pages/authentication/login_page.dart';
 
-class ForgotpasswordPage extends StatefulWidget {
-  const ForgotpasswordPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotpasswordPage> createState() => _ForgotpasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   TextEditingController controllerEmail = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String errorMessage = '';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/constants.dart';
-import 'package:kontrole/views/pages/authentication/forgotpassword_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kontrole/views/pages/authentication/forgot_password_page.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ForgotpasswordPage(),
+                      builder: (context) => ForgotPasswordPage(),
                     ),
                   );
                 },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kontrole/data/notifiers.dart';
 
 class SettingsButtonWidget extends StatelessWidget {
   const SettingsButtonWidget({
@@ -8,6 +9,7 @@ class SettingsButtonWidget extends StatelessWidget {
     this.chevron,
     this.color,
     this.rightText,
+    this.onTap,
   });
 
   final String title;
@@ -15,12 +17,14 @@ class SettingsButtonWidget extends StatelessWidget {
   final Color? color;
   final bool? chevron;
   final String? rightText;
+  final VoidCallback? onTap;
+
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       
-      onTap: () {},
+      onTap: onTap ?? () {},
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Container(
@@ -29,7 +33,7 @@ class SettingsButtonWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             spacing: 20,
             children: [
-              Icon(icon, color: color,),
+              Icon(icon, color: color ?? accentColor.value),
               Expanded(child: Text(title)),
               if (chevron != false) 
                   Icon(Icons.chevron_right),

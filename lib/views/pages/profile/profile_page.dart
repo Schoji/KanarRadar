@@ -1,13 +1,40 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
+import 'package:kontrole/logic/auth_service.dart';
+import 'package:kontrole/logic/page_manager.dart';
+import 'package:kontrole/views/pages/authentication/delete_account_page.dart';
+import 'package:kontrole/views/pages/settings/theme_page.dart';
 import 'package:kontrole/views/widgets/settings/section_widget.dart';
 import 'package:kontrole/views/widgets/settings/settings_button_widget.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    void logout() async {
+      final authService = Provider.of<AuthService>(context, listen: false);
+
+      try {
+        await authService.signOut();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PageManager(wasOpenedBefore: true),
+          ),
+        );
+      } on FirebaseAuthException catch (error) {
+        print(error);
+      }
+    }
+
+    Color secondaryTextColor = Theme.of(
+      context,
+    ).colorScheme.onSurface.withValues(alpha: 0.6);
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -28,12 +55,18 @@ class ProfilePage extends StatelessWidget {
                       spacing: 20,
                       children: [
                         Row(
-                          spacing: 60,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CircleAvatar(
-                              radius: 54,
-                              child: Text("J", style: TextStyle(fontSize: 54)),
+                              radius: 56,
+                              backgroundColor: accentColor.value,
+                              child: CircleAvatar(
+                                radius: 54,
+                                child: Text(
+                                  "${AuthService().currentUser?.displayName?.split(' ')[0][0]}${AuthService().currentUser?.displayName?.split(' ')[1][0]}",
+                                  style: TextStyle(fontSize: 54),
+                                ),
+                              ),
                             ),
                             Column(
                               spacing: 10,
@@ -43,7 +76,8 @@ class ProfilePage extends StatelessWidget {
                                   spacing: 10,
                                   children: [
                                     Text(
-                                      "John Doe",
+                                      AuthService().currentUser?.displayName ??
+                                          "Unknown User",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w500,
@@ -53,7 +87,12 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 Row(
                                   spacing: 10,
-                                  children: [Text("John.doe@wp.pl")],
+                                  children: [
+                                    Text(
+                                      AuthService().currentUser?.email ??
+                                          "Unknown Email",
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -62,9 +101,63 @@ class ProfilePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("Likes"),
-                            Text("Comments"),
-                            Text("Shares"),
+                            Column(
+                              children: [
+                                Icon(Icons.favorite),
+                                Text(
+                                  "10",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  "Likes",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: secondaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Icon(Icons.comment),
+                                Text(
+                                  "10",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  "Comments",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: secondaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Icon(Icons.post_add),
+                                Text(
+                                  "10",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  "Posts",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: secondaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -82,6 +175,14 @@ class ProfilePage extends StatelessWidget {
                     SettingsButtonWidget(
                       title: "Theme",
                       icon: Icons.color_lens,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ThemePage(),
+                          ),
+                        );
+                      },
                     ),
                     SettingsButtonWidget(
                       title: "Language",
@@ -102,6 +203,14 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.delete,
                       color: Colors.red,
                       chevron: false,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DeletaccountPage(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -129,6 +238,45 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.logout,
                       chevron: false,
                       color: Colors.red,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Column(
+                                children: [
+                                  Lottie.asset(
+                                    "assets/lotties/logout.json",
+                                    height: 250,
+                                  ),
+                                  Text(
+                                    "Are you logging out?",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              content: Text(
+                                "You can always log back in at any time.",
+                              ),
+                              actions: [
+                                OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Cancel"),
+                                ),
+                                FilledButton(
+                                  onPressed: logout,
+                                  child: Text("Log out"),
+                                ),
+                              ],
+                              actionsAlignment: MainAxisAlignment.spaceEvenly,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),

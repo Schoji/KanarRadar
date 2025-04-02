@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
-import 'package:kontrole/views/pages/posts/addpost_page.dart';
+import 'package:kontrole/views/pages/posts/add_post_page.dart';
 import 'package:kontrole/views/pages/home/home_page.dart';
 import 'package:kontrole/views/pages/maps/map_page.dart';
 import 'package:kontrole/views/pages/notifications/notifications_page.dart';

@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:kontrole/views/widgets/posts/post_widget.dart';
-import 'package:kontrole/views/widgets/posts/posttype_widget.dart';
+import 'package:kontrole/views/widgets/posts/post_type_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

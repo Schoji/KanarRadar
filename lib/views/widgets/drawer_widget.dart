@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kontrole/views/widgets/city_selection_widget.dart';
-import 'package:kontrole/views/widgets/settings/color_selection_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
-import 'package:kontrole/views/pages/authentication/deletaccount_page.dart';
-import 'package:kontrole/views/pages/authentication/changename_page.dart';
-import 'package:kontrole/views/pages/authentication/changepassword_page.dart';
+import 'package:kontrole/views/pages/authentication/change_name_page.dart';
+import 'package:kontrole/views/pages/authentication/change_password_page.dart';
 
 //temp
-import 'package:kontrole/views/pages/welcome/getstarted_page.dart';
+import 'package:kontrole/views/pages/welcome/get_started_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -67,24 +65,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
-                    Switch(
-                      value: isDarkModeNotifier.value,
-                      onChanged: (bool value) {
-                        setState(() {
-                          isDarkModeNotifier.value = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                
                 CitySelectionWidget(),
-                ColorSelectionWidget(),
-                FilledButton(onPressed: logout, child: Text("Logout")),
                 Spacer(),
                 FilledButton(
                   onPressed: () {
@@ -108,17 +90,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   child: Text("Change password"),
                 ),
                 Spacer(),
-                FilledButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DeletaccountPage(),
-                      ),
-                    );
-                  },
-                  child: Text("Delete Account"),
-                ),
               ],
             ),
           ),
