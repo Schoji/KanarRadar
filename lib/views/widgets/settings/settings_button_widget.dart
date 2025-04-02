@@ -5,7 +5,7 @@ class SettingsButtonWidget extends StatelessWidget {
   const SettingsButtonWidget({
     super.key,
     required this.title,
-    required this.icon,
+    this.icon,
     this.chevron,
     this.color,
     this.rightText,
@@ -13,7 +13,7 @@ class SettingsButtonWidget extends StatelessWidget {
   });
 
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final Color? color;
   final bool? chevron;
   final String? rightText;
@@ -22,6 +22,9 @@ class SettingsButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color secondaryTextColor = Theme.of(
+      context,
+    ).colorScheme.onSurface.withValues(alpha: 0.6);
     return InkWell(
       
       onTap: onTap ?? () {},
@@ -33,12 +36,13 @@ class SettingsButtonWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             spacing: 20,
             children: [
+              if (icon != null)
               Icon(icon, color: color ?? accentColor.value),
               Expanded(child: Text(title)),
-              if (chevron != false) 
-                  Icon(Icons.chevron_right),
               if (rightText != null) 
-                Text(rightText!)
+                Text(rightText!, style: TextStyle(color: secondaryTextColor)),
+              if (chevron != false) 
+                  Icon(Icons.chevron_right, color: secondaryTextColor),
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kontrole/data/notifiers.dart';
 import 'package:kontrole/logic/auth_service.dart';
 import 'package:kontrole/logic/page_manager.dart';
-import 'package:kontrole/views/pages/authentication/delete_account_page.dart';
+import 'package:kontrole/views/pages/settings/personal_info_page.dart';
 import 'package:kontrole/views/pages/settings/theme_page.dart';
 import 'package:kontrole/views/widgets/settings/section_widget.dart';
 import 'package:kontrole/views/widgets/settings/settings_button_widget.dart';
@@ -58,34 +58,42 @@ class ProfilePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            CircleAvatar(
-                              radius: 56,
-                              backgroundColor: accentColor.value,
-                              child: CircleAvatar(
-                                radius: 54,
-                                child: Text(
-                                  "${AuthService().currentUser?.displayName?.split(' ')[0][0]}${AuthService().currentUser?.displayName?.split(' ')[1][0]}",
-                                  style: TextStyle(fontSize: 54),
-                                ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SetPicturePage(),
+                                  ),
+                                );
+                              },
+                              child: Stack(
+                                children: [
+                                  InkWell(
+                                    child: CircleAvatar(
+                                      radius: 56,
+                                      backgroundColor: accentColor.value,
+                                      child: CircleAvatar(
+                                        radius: 54,
+                                        child: Text(
+                                          "${AuthService().currentUser?.displayName?.split(' ')[0][0]}${AuthService().currentUser?.displayName?.split(' ')[1][0]}",
+                                          style: TextStyle(fontSize: 54),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    bottom: 0,
+                                    child: CircleAvatar(
+                                      radius: 17,
+                                      backgroundColor: accentColor.value,
+                                      child: Icon(Icons.edit, size: 20),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            // TextButton(
-                            //   onPressed: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => SetPicturePage(),
-                            //       ),
-                            //     );
-                            //   },
-                            //   child: Text(
-                            //     "Set picture",
-                            //     style: TextStyle(
-                            //       decoration: TextDecoration.underline,
-                            //       fontSize: 16,
-                            //     ),
-                            //   ),
-                            // ),
+                            ),                       
                             Column(
                               spacing: 10,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,6 +197,12 @@ class ProfilePage extends StatelessWidget {
                     SettingsButtonWidget(
                       title: "Edit profile",
                       icon: Icons.person,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PersonalInfoPage()),
+                        );
+                      },
                     ),
                     SettingsButtonWidget(
                       title: "Theme",
@@ -210,21 +224,7 @@ class ProfilePage extends StatelessWidget {
                 SectionWidget(
                   title: "Security",
                   children: [
-                    SettingsButtonWidget(title: "Passwords", icon: Icons.key),
-                    SettingsButtonWidget(
-                      title: "Delete your account",
-                      icon: Icons.delete,
-                      color: Colors.red,
-                      chevron: false,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DeletaccountPage(),
-                          ),
-                        );
-                      },
-                    ),
+                    SettingsButtonWidget(title: "Passwords", icon: Icons.key),      
                   ],
                 ),
                 SectionWidget(
