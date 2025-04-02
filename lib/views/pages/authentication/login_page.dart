@@ -140,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text("Forgot password?"),
               ),
+              // message field z informacja zwrotna z auth
             ],
           ),
         ),

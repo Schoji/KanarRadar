@@ -9,6 +9,7 @@ import 'package:kontrole/views/widgets/settings/section_widget.dart';
 import 'package:kontrole/views/widgets/settings/settings_button_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:kontrole/views/pages/profile/set_picture_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -51,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Column(
+                    child: Row(
                       spacing: 20,
                       children: [
                         Row(
