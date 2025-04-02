@@ -52,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Row(
+                    child: Column(
                       spacing: 20,
                       children: [
                         Row(
@@ -69,6 +69,23 @@ class ProfilePage extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            // TextButton(
+                            //   onPressed: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) => SetPicturePage(),
+                            //       ),
+                            //     );
+                            //   },
+                            //   child: Text(
+                            //     "Set picture",
+                            //     style: TextStyle(
+                            //       decoration: TextDecoration.underline,
+                            //       fontSize: 16,
+                            //     ),
+                            //   ),
+                            // ),
                             Column(
                               spacing: 10,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,9 +196,7 @@ class ProfilePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => ThemePage(),
-                          ),
+                          MaterialPageRoute(builder: (context) => ThemePage()),
                         );
                       },
                     ),
@@ -190,9 +205,6 @@ class ProfilePage extends StatelessWidget {
                       icon: Icons.language,
                       chevron: false,
                     ),
-
-                    //todo zaimplementować mozliwosc wlasnego koloru akcentowego
-                    //todo zobacz co to listview, moe ci się przydać
                   ],
                 ),
                 SectionWidget(
